@@ -33,6 +33,13 @@ local.properties
 .idea/modules.xml
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
+.idea/AndroidProjectSystem.xml
+.idea/copilot.data.migration.agent.xml
+.idea/copilot.data.migration.ask.xml
+.idea/copilot.data.migration.ask2agent.xml
+.idea/copilot.data.migration.edit.xml
+.idea/deploymentTargetSelector.xml
+.idea/migrations.xml
 *.iml
 
 # OS-specific files
