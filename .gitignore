@@ -40,6 +40,8 @@ local.properties
 .idea/copilot.data.migration.edit.xml
 .idea/deploymentTargetSelector.xml
 .idea/migrations.xml
+.idea/deviceManager.xml
+app/google-services.json
 *.iml
 
 # OS-specific files

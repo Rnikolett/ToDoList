@@ -16,6 +16,10 @@
     <fragment
         android:id="@+id/addEditTaskFragment"
         android:name="com.example.todolist.ui.main.AddEditTaskFragment"
-        android:label="Add/Edit Task" />
+        android:label="Add/Edit Task" >
+        <action
+            android:id="@+id/action_addEditTaskFragment_self"
+            app:destination="@id/addEditTaskFragment" />
+    </fragment>
 
 </navigation>

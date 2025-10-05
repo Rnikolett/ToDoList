@@ -12,5 +12,6 @@
     <string name="task_title">Task title</string>
     <string name="task_description">Task description</string>
     <string name="save">Save</string>
+    <string name="register">Register</string>
 
 </resources>
