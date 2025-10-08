@@ -3,6 +3,10 @@ plugins {
     alias(libs.plugins.google.services)
 }
 
+configurations.all {
+    exclude(group = "com.intellij", module = "annotations")
+}
+
 android {
     namespace = "com.example.todolist"
     compileSdk = 36
@@ -49,7 +53,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation ("androidx.room:room-runtime:2.6.1")
-    annotationProcessor ("androidx.room:room-compiler:2.6.1")
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     // https://firebase.google.com/docs/android/setup#available-libraries
