@@ -8,10 +8,12 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="add_task">Add Task</string>
     <string name="task_title">Task title</string>
     <string name="task_description">Task description</string>
     <string name="save">Save</string>
     <string name="register">Register</string>
+    <string name="delete">Delete task</string>
 
 </resources>
