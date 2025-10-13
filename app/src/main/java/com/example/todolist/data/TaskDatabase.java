@@ -17,7 +17,7 @@ public abstract class TaskDatabase extends RoomDatabase {
                             TaskDatabase.class,
                             "task_database"
                     )
-                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration(false)
                     .build();
         }
         return instance;

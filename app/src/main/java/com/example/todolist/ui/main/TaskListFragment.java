@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.todolist.R;
@@ -20,22 +21,14 @@ public class TaskListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_task_list, container, false);
+        View view =  inflater.inflate(R.layout.fragment_task_list, container, false);
+
+        Button addButton = view.findViewById(R.id.btnAddTask);
+        addButton.setOnClickListener(v -> {
+            NavDirections action = TaskListFragmentDirections.actionTaskListToAddEditTask(); // new task (default values)
+            NavHostFragment.findNavController(this).navigate(action);
+        });
+
+        return view;
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view,
-                              @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Button btnAdd = view.findViewById(R.id.btnAddTask);
-        RecyclerView recycler = view.findViewById(R.id.recyclerTasks);
-
-        btnAdd.setOnClickListener(v ->
-                NavHostFragment.findNavController(TaskListFragment.this)
-                        .navigate(R.id.action_taskList_to_addEditTask)
-        );
-
-        // TODO: load tasks into RecyclerView
-    }
-}
+   }

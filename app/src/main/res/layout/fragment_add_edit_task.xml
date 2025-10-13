@@ -7,20 +7,27 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/etTaskTitle"
+        android:id="@+id/edit_text_title"
         android:hint="@string/task_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
-        android:id="@+id/etTaskDescription"
+        android:id="@+id/edit_text_description"
         android:hint="@string/task_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
 
     <Button
-        android:id="@+id/btnSaveTask"
+        android:id="@+id/button_save"
         android:text="@string/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/button_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:layout_marginTop="8dp" />
 </LinearLayout>
