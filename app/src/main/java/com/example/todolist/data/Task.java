@@ -3,7 +3,7 @@ package com.example.todolist.data;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-@Entity(tableName = "task_table")
+@Entity
 public class Task {
     @PrimaryKey(autoGenerate = true)
     private int id;

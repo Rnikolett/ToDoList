@@ -22,7 +22,7 @@
         app:navGraph="@navigation/nav_graph"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginTop="100dp"
         tools:layout="@layout/fragment_task_list" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
