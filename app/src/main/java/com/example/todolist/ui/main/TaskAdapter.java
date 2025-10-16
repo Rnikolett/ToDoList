@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
     private List<Task> tasks = new ArrayList<>();
     private OnItemClickListener listener;
+    private OnDeleteClickListener deleteListener;
 
     @NonNull
     @Override
@@ -52,16 +55,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
     public class TaskHolder extends RecyclerView.ViewHolder {
         private final TextView textViewTitle;
         private final TextView textViewDescription;
+        private final ImageButton deleteButton;
+
 
         public TaskHolder(@NonNull View itemView) {
             super(itemView);
             textViewTitle = itemView.findViewById(R.id.text_view_title);
             textViewDescription = itemView.findViewById(R.id.text_view_description);
+            deleteButton = itemView.findViewById(R.id.button_delete);
 
             itemView.setOnClickListener(v -> {
                 int position = getAbsoluteAdapterPosition();
                 if (listener != null && position != RecyclerView.NO_POSITION) {
                     listener.onItemClick(tasks.get(position));
+                }
+            });
+
+            deleteButton.setOnClickListener(v -> {
+                int position = getAbsoluteAdapterPosition();
+                if (deleteListener != null && position != RecyclerView.NO_POSITION) {
+                    deleteListener.onDeleteClick(tasks.get(position));
                 }
             });
         }
@@ -72,5 +85,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public interface OnDeleteClickListener {
+        void onDeleteClick(Task task);
+    }
+    public void setOnDeleteClickListener(OnDeleteClickListener listener) {
+        this.deleteListener = listener;
     }
 }

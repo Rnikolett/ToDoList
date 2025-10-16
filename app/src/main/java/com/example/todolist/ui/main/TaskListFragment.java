@@ -59,6 +59,10 @@ public class TaskListFragment extends Fragment {
                     .setTaskDescription(task.getDescription());
             NavHostFragment.findNavController(this).navigate(action);
         });
+        //When user taps the delete button, delete the task
+        adapter.setOnDeleteClickListener(task -> {taskViewModel.delete(task);
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.taskListFragment);});
 
         return view;
     }

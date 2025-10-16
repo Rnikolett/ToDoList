@@ -20,7 +20,7 @@ public class AddEditTaskFragment extends Fragment {
     private EditText titleEditText;
     private EditText descriptionEditText;
     private TaskViewModel taskViewModel;
-    private int taskId = -1;
+    private int taskId = -1; //Default new Task
 
     @Nullable
     @Override
@@ -38,7 +38,7 @@ public class AddEditTaskFragment extends Fragment {
         Button cancelButton = view.findViewById(R.id.button_cancel);
 
         if (getArguments() != null) {
-            int taskId = AddEditTaskFragmentArgs.fromBundle(getArguments()).getTaskId();
+            taskId = AddEditTaskFragmentArgs.fromBundle(getArguments()).getTaskId();
             titleEditText.setText(AddEditTaskFragmentArgs.fromBundle(getArguments()).getTaskTitle());
             descriptionEditText.setText(AddEditTaskFragmentArgs.fromBundle(getArguments()).getTaskDescription());
         }
@@ -49,13 +49,13 @@ public class AddEditTaskFragment extends Fragment {
 
             if (taskId == -1) {
                 // New task
-                Task inserted = new Task(title, description);
-                taskViewModel.insert(inserted);
+                Task newTask = new Task(title, description);
+                taskViewModel.insert(newTask);
             } else {
                 // Update existing task
-                Task updated = new Task(title, description);
-                updated.setId(taskId);
-                taskViewModel.update(updated);
+                Task ediTask = new Task(title, description);
+                ediTask.setId(taskId);
+                taskViewModel.update(ediTask);
             }
 
             NavHostFragment.findNavController(this)

@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:maxHeight="150dp"
         android:padding="12dp">
 
         <TextView
@@ -22,6 +23,8 @@
             android:textSize="18sp"
             android:textColor="@android:color/black" />
 
+
+
         <TextView
             android:id="@+id/text_view_description"
             android:layout_width="wrap_content"
@@ -29,6 +32,15 @@
             android:text="@string/task_description"
             android:textSize="14sp"
             android:textColor="#666" />
+
+            <ImageButton
+                android:id="@+id/button_delete"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_delete"
+                card_view:tint="@android:color/holo_red_dark" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
