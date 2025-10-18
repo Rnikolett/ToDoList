@@ -1,5 +1,6 @@
 package com.example.todolist.ui.main;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,9 +44,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
         return tasks.size();
     }
 
-    public void setTasks(List<Task> tasks) {
+   @SuppressLint("NotifyDataSetChanged")
+   public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     public Task getTaskAt(int position) {

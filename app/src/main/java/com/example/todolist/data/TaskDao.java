@@ -20,6 +20,6 @@ public interface TaskDao {
     @Delete
     void delete(Task task);
 
-    @Query("SELECT * FROM Task ORDER BY id DESC")
-    LiveData<List<Task>> getAllTasks();
+    @Query("SELECT * FROM Task WHERE userId = :userId ORDER BY id DESC")
+    LiveData<List<Task>> getAllTasks(String userId);
 }

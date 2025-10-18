@@ -44,9 +44,9 @@ public class TaskListFragment extends Fragment {
         //taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), adapter::setTasks);
 
-
+        //Creates a new Task with default values
         addButton.setOnClickListener(v -> {
-            NavDirections action = TaskListFragmentDirections.actionTaskListToAddEditTask(); // new task (default values)
+            NavDirections action = TaskListFragmentDirections.actionTaskListToAddEditTask();
             NavHostFragment.findNavController(this).navigate(action);
         });
 
@@ -61,8 +61,7 @@ public class TaskListFragment extends Fragment {
         });
         //When user taps the delete button, delete the task
         adapter.setOnDeleteClickListener(task -> {taskViewModel.delete(task);
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.taskListFragment);});
+        });
 
         return view;
     }

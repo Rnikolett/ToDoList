@@ -10,11 +10,13 @@ public class Task {
 
     private String title;
     private String description;
+    private String userId;
 
     // Constructor
-    public Task(String title, String description) {
+    public Task(String title, String description, String userId) {
         this.title = title;
         this.description = description;
+        this.userId = userId;
     }
 
     // Getters & Setters
@@ -26,4 +28,6 @@ public class Task {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 }

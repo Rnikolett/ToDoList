@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.todolist.R;
 import com.example.todolist.data.Task;
 import com.example.todolist.viewmodel.TaskViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AddEditTaskFragment extends Fragment {
     private EditText titleEditText;
@@ -46,14 +47,16 @@ public class AddEditTaskFragment extends Fragment {
         saveButton.setOnClickListener(v -> {
             String title = titleEditText.getText().toString().trim();
             String description = descriptionEditText.getText().toString().trim();
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
             if (taskId == -1) {
                 // New task
-                Task newTask = new Task(title, description);
+                Task newTask = new Task(title, description, userId);
                 taskViewModel.insert(newTask);
             } else {
                 // Update existing task
-                Task ediTask = new Task(title, description);
+                Task ediTask = new Task(title, description, userId);
                 ediTask.setId(taskId);
                 taskViewModel.update(ediTask);
             }

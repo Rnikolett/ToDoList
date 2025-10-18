@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Task.class}, version = 1, exportSchema = false)
+@Database(entities = {Task.class}, version = 2, exportSchema = false)
 public abstract class TaskDatabase extends RoomDatabase {
     private static volatile TaskDatabase instance;
     public abstract TaskDao taskDao();
@@ -24,7 +24,7 @@ public abstract class TaskDatabase extends RoomDatabase {
                                 TaskDatabase.class,
                                 "task_database"
                         )
-                        .fallbackToDestructiveMigration(false)
+                        .fallbackToDestructiveMigration(true)
                         .build();
             }
         }

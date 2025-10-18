@@ -12,13 +12,13 @@ import java.util.concurrent.Executors;
 public class TaskRepository {
     TaskDatabase database;
     private final TaskDao taskDao;
-    private final LiveData<List<Task>> allTasks;
+    //private final LiveData<List<Task>> allTasks;
     //private final ExecutorService executorService;
 
     public TaskRepository(Application application){
         /*TaskDatabase*/ database = TaskDatabase.getInstance(application);
         taskDao = database.taskDao();
-        allTasks = taskDao.getAllTasks();
+        //allTasks = taskDao.getAllTasks();
         //executorService = Executors.newSingleThreadExecutor();
     }
     public  void insert(Task task){
@@ -46,7 +46,7 @@ public class TaskRepository {
     public void delete(Task task) {
         executorService.execute(() -> taskDao.delete(task));
     }*/
-    public LiveData<List<Task>> getAllTasks(){
-        return allTasks;
+    public LiveData<List<Task>> getAllTasks(String userId) {
+        return taskDao.getAllTasks(userId);
     }
 }

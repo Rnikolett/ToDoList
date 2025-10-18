@@ -8,16 +8,20 @@ import androidx.lifecycle.LiveData;
 
 import com.example.todolist.data.Task;
 import com.example.todolist.data.TaskRepository;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
 public class TaskViewModel extends AndroidViewModel {
     private final TaskRepository repository;
-    private final LiveData<List<Task>> allTasks;
+    private LiveData<List<Task>> userTasks;
+    //private final LiveData<List<Task>> allTasks;
     public TaskViewModel(@NonNull Application application) {
         super(application);
         repository = new TaskRepository(application);
-        allTasks = repository.getAllTasks();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        userTasks = repository.getAllTasks(currentUserId);
     }
     public void insert(Task task){
         repository.insert(task);
@@ -29,7 +33,7 @@ public class TaskViewModel extends AndroidViewModel {
         repository.delete(task);
     }
     public LiveData<List<Task>> getAllTasks() {
-        return allTasks;
+        return userTasks;
     }
 
 }
