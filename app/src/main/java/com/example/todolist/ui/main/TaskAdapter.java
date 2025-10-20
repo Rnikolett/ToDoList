@@ -13,15 +13,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolist.R;
+import com.example.todolist.data.Priority;
 import com.example.todolist.data.Task;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
     private List<Task> tasks = new ArrayList<>();
     private OnItemClickListener listener;
     private OnDeleteClickListener deleteListener;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
 
     @NonNull
     @Override
@@ -35,8 +39,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
     public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
         Task currentTask = tasks.get(position);
         holder.textViewTitle.setText(currentTask.getTitle());
-        holder.textViewDescription.setText(currentTask.getDescription());
-
+        if (!currentTask.getDescription().isEmpty()){
+            holder.textViewDescription.setText(currentTask.getDescription()); //only show description if not empty
+        }
+        holder.textPriority.setText(currentTask.getPriority().name());
+        switch (currentTask.getPriority()){
+            case HIGH:
+                holder.textPriority.setTextColor(holder.itemView.getResources().getColor(R.color.red));
+                break;
+            case AVERAGE:
+                holder.textPriority.setTextColor(holder.itemView.getResources().getColor(R.color.orange));
+                break;
+            case LOW:
+                holder.textPriority.setTextColor(holder.itemView.getResources().getColor(R.color.green));
+                break;
+        }
+        holder.textDueDate.setText(dateFormat.format(currentTask.getDueDate()));
     }
 
     @Override
@@ -58,6 +76,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
         private final TextView textViewTitle;
         private final TextView textViewDescription;
         private final ImageButton deleteButton;
+        private final TextView textPriority;
+        private final TextView textDueDate;
 
 
         public TaskHolder(@NonNull View itemView) {
@@ -65,6 +85,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
             textViewTitle = itemView.findViewById(R.id.text_view_title);
             textViewDescription = itemView.findViewById(R.id.text_view_description);
             deleteButton = itemView.findViewById(R.id.button_delete);
+            textDueDate = itemView.findViewById(R.id.textDueDate);
+            textPriority = itemView.findViewById(R.id.textPriority);
+
 
             itemView.setOnClickListener(v -> {
                 int position = getAbsoluteAdapterPosition();
