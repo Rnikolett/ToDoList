@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <Button
-        android:id="@+id/toWeekTasksButton"
-        android:text="To week tasks"
-        android:layout_width="match_parent"
+
+    <TextView
+        android:text="This Week's Tasks"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <Button
-        android:id="@+id/btnAddTask"
-        android:text="@string/add_task"
+        android:id="@+id/toTaskListButton"
+        android:text="To all tasks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerTasks"
+        android:id="@+id/recyclerWeek"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:clipToPadding="false"
         android:paddingBottom="8dp"
         tools:listitem="@layout/item_task"/>
+
+
 </LinearLayout>

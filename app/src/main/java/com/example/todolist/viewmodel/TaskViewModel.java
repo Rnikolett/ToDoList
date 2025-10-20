@@ -35,5 +35,14 @@ public class TaskViewModel extends AndroidViewModel {
     public LiveData<List<Task>> getAllTasks() {
         return userTasks;
     }
+    public LiveData<List<Task>> getTasksForToday() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return repository.getTasksForToday(userId);
+    }
+
+    public LiveData<List<Task>> getTasksForThisWeek() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return repository.getTasksForThisWeek(userId);
+    }
 
 }

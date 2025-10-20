@@ -14,6 +14,19 @@
         <action
             android:id="@+id/action_taskList_to_addEditTask"
             app:destination="@id/addEditTaskFragment" />
+        <action
+            android:id="@+id/action_taskList_to_weekList"
+            app:destination="@id/weekTasksFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/weekTasksFragment"
+        android:name="com.example.todolist.ui.main.WeekTaskFragment"
+        android:label="This Week's Tasks"
+        tools:layout="@layout/week_task_fragment" >
+    <action
+        android:id="@+id/action_weekList_to_taskTask"
+        app:destination="@id/taskListFragment" />
     </fragment>
 
     <fragment

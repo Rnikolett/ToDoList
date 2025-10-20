@@ -29,7 +29,7 @@ public class TaskListFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_task_list, container, false);
 
         Button addButton = view.findViewById(R.id.btnAddTask);
-
+        Button weekButton = view.findViewById(R.id.toWeekTasksButton);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerTasks);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
@@ -61,6 +61,10 @@ public class TaskListFragment extends Fragment {
         });
         //When user taps the delete button, delete the task
         adapter.setOnDeleteClickListener(task -> {taskViewModel.delete(task);
+        });
+        weekButton.setOnClickListener(v -> {
+            NavDirections action = TaskListFragmentDirections.actionTaskListToWeekList();
+            NavHostFragment.findNavController(this).navigate(action);
         });
 
         return view;

@@ -22,4 +22,11 @@ public interface TaskDao {
 
     @Query("SELECT * FROM Task WHERE userId = :userId ORDER BY id DESC")
     LiveData<List<Task>> getAllTasks(String userId);
+
+    @Query("SELECT * FROM Task WHERE userId = :userId AND date(dueDate/1000, 'unixepoch') = date('now', 'localtime')")
+    LiveData<List<Task>> getTasksForToday(String userId);
+    // ('now', 'weekday 1', '-7 days', 'localtime') - Monday of this week
+    //('now', 'weekday 0') - Saturday of this week
+    @Query("SELECT * FROM Task WHERE userId = :userId AND date(dueDate/1000, 'unixepoch') BETWEEN date('now', 'weekday 1', '-7 days', 'localtime') AND date('now', 'weekday 0', 'localtime')")
+    LiveData<List<Task>> getTasksForThisWeek(String userId);
 }

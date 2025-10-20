@@ -49,4 +49,11 @@ public class TaskRepository {
     public LiveData<List<Task>> getAllTasks(String userId) {
         return taskDao.getAllTasks(userId);
     }
+    public LiveData<List<Task>> getTasksForToday(String userId) {
+        return taskDao.getTasksForToday(userId);
+    }
+
+    public LiveData<List<Task>> getTasksForThisWeek(String userId) {
+        return taskDao.getTasksForThisWeek(userId);
+    }
 }
