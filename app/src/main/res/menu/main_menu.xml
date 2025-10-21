@@ -3,6 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_week"
+        android:title="This Week's Tasks"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_all"
+        android:title="All Tasks"
+        android:icon="@android:drawable/btn_star"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_logout"
         android:title="@string/logout"
         android:icon="@android:drawable/ic_lock_power_off"
