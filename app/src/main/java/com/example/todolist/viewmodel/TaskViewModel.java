@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.todolist.data.SubTask;
 import com.example.todolist.data.Task;
 import com.example.todolist.data.TaskRepository;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +44,12 @@ public class TaskViewModel extends AndroidViewModel {
     public LiveData<List<Task>> getTasksForThisWeek() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         return repository.getTasksForThisWeek(userId);
+    }
+    public void insertSubTask(SubTask subTask) { repository.insertSubTask(subTask); }
+    public void updateSubTask(SubTask subTask) { repository.updateSubTask(subTask); }
+    public void deleteSubTask(SubTask subTask) { repository.deleteSubTask(subTask); }
+    public LiveData<List<SubTask>> getSubTasksForTask(int taskId) {
+        return repository.getSubTasksForTask(taskId);
     }
 
 }

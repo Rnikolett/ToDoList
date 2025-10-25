@@ -56,4 +56,23 @@ public class TaskRepository {
     public LiveData<List<Task>> getTasksForThisWeek(String userId) {
         return taskDao.getTasksForThisWeek(userId);
     }
+
+    public void insertSubTask(SubTask subtask) {
+        TaskDatabase.databaseWriteExecutor.execute(() -> {
+            taskDao.insertSubTask(subtask);
+        });
+    }
+    public void updateSubTask(SubTask subtask) {
+        TaskDatabase.databaseWriteExecutor.execute(() -> {
+            taskDao.updateSubTask(subtask);
+        });
+    }
+    public void deleteSubTask(SubTask subtask) {
+        TaskDatabase.databaseWriteExecutor.execute(() -> {
+            taskDao.deleteSubTask(subtask);
+        });
+    }
+    public LiveData<List<SubTask>> getSubTasksForTask(int taskId) {
+        return taskDao.getSubTasksForTask(taskId);
+    }
 }

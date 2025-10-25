@@ -16,9 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolist.R;
 import com.example.todolist.data.Priority;
+import com.example.todolist.data.SubTask;
 import com.example.todolist.data.Task;
 import com.example.todolist.viewmodel.TaskViewModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,9 +36,10 @@ public class AddEditTaskFragment extends Fragment {
     private TaskViewModel taskViewModel;
     private Spinner prioritySpinner;
     private Date dueDate;
+    Button saveButton, cancelButton, dueDateButton;
     private int taskId = -1; //Default new Task
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     @Nullable
     @Override
@@ -49,10 +53,28 @@ public class AddEditTaskFragment extends Fragment {
 
         titleEditText = view.findViewById(R.id.edit_text_title);
         descriptionEditText = view.findViewById(R.id.edit_text_description);
-        Button saveButton = view.findViewById(R.id.button_save);
-        Button cancelButton = view.findViewById(R.id.button_cancel);
         prioritySpinner = view.findViewById(R.id.spinner_priority);
-        Button dueDateButton = view.findViewById(R.id.button_due_date);
+        saveButton = view.findViewById(R.id.button_save);
+        cancelButton = view.findViewById(R.id.button_cancel);
+        dueDateButton = view.findViewById(R.id.button_due_date);
+
+        RecyclerView recyclerSubTasks = view.findViewById(R.id.recyclerSubTasks);
+        SubTaskAdapter subTaskAdapter = new SubTaskAdapter(new SubTaskAdapter.OnSubTaskInteractionListener() {
+            @Override
+            public void onSubTaskChecked(SubTask subTask, boolean isChecked) {
+                subTask.setCompleted(isChecked);
+                taskViewModel.updateSubTask(subTask);
+            }
+
+            @Override
+            public void onSubTaskDeleted(SubTask subTask) {
+                taskViewModel.deleteSubTask(subTask);
+            }
+        });
+        recyclerSubTasks.setAdapter(subTaskAdapter);
+        recyclerSubTasks.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        taskViewModel.getSubTasksForTask(taskId).observe(getViewLifecycleOwner(), subTaskAdapter::setSubTasks);
 
         //Setup Priority Spinner
         ArrayAdapter<Priority> adapter = new ArrayAdapter<>(requireContext(),
@@ -61,9 +83,13 @@ public class AddEditTaskFragment extends Fragment {
         prioritySpinner.setAdapter(adapter);
 
         if (getArguments() != null) {
-            taskId = AddEditTaskFragmentArgs.fromBundle(getArguments()).getTaskId();
-            titleEditText.setText(AddEditTaskFragmentArgs.fromBundle(getArguments()).getTaskTitle());
-            descriptionEditText.setText(AddEditTaskFragmentArgs.fromBundle(getArguments()).getTaskDescription());
+            var asd = AddEditTaskFragmentArgs.fromBundle(getArguments());
+            taskId = asd.getTaskId();
+            var timestamp = asd.getDueDate();
+            dueDate = new Date(timestamp);
+            titleEditText.setText(asd.getTaskTitle());
+            descriptionEditText.setText(asd.getTaskDescription());
+            dueDateButton.setText(getString(R.string.due, dateFormat.format(dueDate)));
         }
 
         //Due Date picker
@@ -74,7 +100,7 @@ public class AddEditTaskFragment extends Fragment {
                         Calendar selected = Calendar.getInstance();
                         selected.set(year, month, day);
                         dueDate = selected.getTime();
-                        dueDateButton.setText("Due: " + dateFormat.format(dueDate));
+                        dueDateButton.setText(getString(R.string.due, dateFormat.format(dueDate)));
                     },
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
@@ -82,6 +108,13 @@ public class AddEditTaskFragment extends Fragment {
             );
             dialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000); // Prevent past dates
             dialog.show();
+        });
+
+        //NEM JÓ
+        Button addSubTaskButton = view.findViewById(R.id.button_add_subtask);
+        addSubTaskButton.setOnClickListener(v -> {
+            SubTask subTask = new SubTask(taskId, "New Subtask");
+            taskViewModel.insertSubTask(subTask);
         });
 
         saveButton.setOnClickListener(v -> {
@@ -130,6 +163,7 @@ public class AddEditTaskFragment extends Fragment {
         cancelButton.setOnClickListener(v ->
                 NavHostFragment.findNavController(this).popBackStack()
         );
+
         return view;
     }
 }

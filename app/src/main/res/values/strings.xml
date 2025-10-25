@@ -16,5 +16,6 @@
     <string name="register">Register</string>
     <string name="delete">Delete task</string>
     <string name="cancel">Cancel</string>
+    <string name="due">Due: %1$s</string>
 
 </resources>

@@ -29,4 +29,17 @@ public interface TaskDao {
     //('now', 'weekday 0') - Saturday of this week
     @Query("SELECT * FROM Task WHERE userId = :userId AND date(dueDate/1000, 'unixepoch') BETWEEN date('now', 'weekday 1', '-7 days', 'localtime') AND date('now', 'weekday 0', 'localtime')")
     LiveData<List<Task>> getTasksForThisWeek(String userId);
+
+    // --- SUBTASK OPERATIONS ---
+    @Insert
+    void insertSubTask(SubTask subTask);
+
+    @Update
+    void updateSubTask(SubTask subTask);
+
+    @Delete
+    void deleteSubTask(SubTask subTask);
+
+    @Query("SELECT * FROM SubTask WHERE taskId = :taskId ORDER BY id ASC")
+    LiveData<List<SubTask>> getSubTasksForTask(int taskId);
 }

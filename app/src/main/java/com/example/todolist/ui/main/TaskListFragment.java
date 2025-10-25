@@ -55,7 +55,8 @@ public class TaskListFragment extends Fragment {
                     .actionTaskListToAddEditTask()
                     .setTaskId(task.getId())
                     .setTaskTitle(task.getTitle())
-                    .setTaskDescription(task.getDescription());
+                    .setTaskDescription(task.getDescription())
+                    .setDueDate(task.getDueDate().getTime());
             NavHostFragment.findNavController(this).navigate(action);
         });
         //When user taps the delete button, delete the task
