@@ -2,7 +2,9 @@ package com.example.todolist.ui.main;
 
 import androidx.fragment.app.Fragment;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +72,28 @@ public class AddEditTaskFragment extends Fragment {
             public void onSubTaskDeleted(SubTask subTask) {
                 taskViewModel.deleteSubTask(subTask);
             }
+            @Override
+            public void showEditSubTaskDialog(View view, SubTask subTask) {
+                Context context = view.getContext();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Edit Subtask");
+
+                final EditText input = new EditText(context);
+                input.setText(subTask.getTitle());
+                builder.setView(input);
+
+                builder.setPositiveButton("Save", (dialog, which) -> {
+                    String title = input.getText().toString().trim();
+                    if (!title.isEmpty()) {
+                        subTask.setTitle(title);
+                        taskViewModel.updateSubTask(subTask);
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+                builder.show();
+            }
+
         });
         recyclerSubTasks.setAdapter(subTaskAdapter);
         recyclerSubTasks.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -110,12 +134,17 @@ public class AddEditTaskFragment extends Fragment {
             dialog.show();
         });
 
-        //NEM JÓ
-        Button addSubTaskButton = view.findViewById(R.id.button_add_subtask);
-        addSubTaskButton.setOnClickListener(v -> {
-            SubTask subTask = new SubTask(taskId, "New Subtask");
-            taskViewModel.insertSubTask(subTask);
-        });
+        //Works, but not what I want
+        if (taskId != -1) {
+            Button addSubTaskButton = view.findViewById(R.id.button_add_subtask);
+            addSubTaskButton.setVisibility(View.VISIBLE);
+            addSubTaskButton.setOnClickListener(v -> {
+                showAddSubTaskDialog(view, taskId);
+                /*SubTask subTask = new SubTask(taskId, "New Subtask");
+                taskViewModel.insertSubTask(subTask);*/
+            });
+        }
+
 
         saveButton.setOnClickListener(v -> {
             String title = titleEditText.getText().toString().trim();
@@ -164,6 +193,29 @@ public class AddEditTaskFragment extends Fragment {
                 NavHostFragment.findNavController(this).popBackStack()
         );
 
+
         return view;
     }
+    private void showAddSubTaskDialog(View view, int taskId) {
+        Context context = view.getContext();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Add Subtask");
+
+        final EditText input = new EditText(context);
+        input.setHint("Subtask title");
+        builder.setView(input);
+
+        builder.setPositiveButton("Add", (dialog, which) -> {
+            String title = input.getText().toString().trim();
+            if (!title.isEmpty()) {
+                SubTask newSubTask = new SubTask(taskId, title);
+                taskViewModel.insertSubTask(newSubTask);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+
 }

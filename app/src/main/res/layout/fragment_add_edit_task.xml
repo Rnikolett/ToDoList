@@ -29,15 +29,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSubTasks"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="108dp"
         android:layout_marginBottom="8dp"
-        tools:listitem="@layout/item_subtask"/>
+        tools:listitem="@layout/item_subtask" />
 
     <Button
         android:id="@+id/button_add_subtask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Subtask" />
+        android:text="Add Subtask"
+        android:visibility="gone"/>
 
     <Spinner
         android:id="@+id/spinner_priority"

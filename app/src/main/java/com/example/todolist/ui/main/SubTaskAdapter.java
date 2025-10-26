@@ -19,6 +19,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     public interface OnSubTaskInteractionListener {
         void onSubTaskChecked(SubTask subTask, boolean isChecked);
         void onSubTaskDeleted(SubTask subTask);
+        void showEditSubTaskDialog(View view, SubTask subTask);
     }
 
     public SubTaskAdapter(OnSubTaskInteractionListener listener) {
@@ -41,12 +42,16 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SubTask subTask = subTasks.get(position);
-        holder.checkBox.setText(subTask.getTitle());
-        holder.checkBox.setChecked(subTask.isCompleted());
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) ->
-                listener.onSubTaskChecked(subTask, isChecked)
-        );
-        holder.deleteButton.setOnClickListener(v -> listener.onSubTaskDeleted(subTask));
+        if (subTask != null) {
+            holder.checkBox.setText(subTask.getTitle());
+            holder.checkBox.setChecked(subTask.isCompleted());
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+                    listener.onSubTaskChecked(subTask, isChecked)
+            );
+            holder.deleteButton.setOnClickListener(v -> listener.onSubTaskDeleted(subTask));
+            holder.editButton.setOnClickListener(view -> listener.showEditSubTaskDialog(view, subTask));
+        }
+
     }
 
     @Override
@@ -57,11 +62,13 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox checkBox;
         ImageButton deleteButton;
+        ImageButton editButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.checkbox_subtask);
             deleteButton = itemView.findViewById(R.id.button_delete_subtask);
+            editButton = itemView.findViewById(R.id.button_edit_subtask);
         }
     }
 }

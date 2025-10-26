@@ -28,10 +28,10 @@ public class WeekTaskFragment extends Fragment {
         View view = inflater.inflate(R.layout.week_task_fragment, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerWeek);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new TaskAdapter();
-        recyclerView.setAdapter(adapter);
 
         taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
+        adapter = new TaskAdapter(taskViewModel, getViewLifecycleOwner());
+        recyclerView.setAdapter(adapter);
         taskViewModel.getTasksForThisWeek().observe(getViewLifecycleOwner(), adapter::setTasks);
 
         return view;

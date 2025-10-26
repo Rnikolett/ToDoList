@@ -1,20 +1,28 @@
 package com.example.todolist.ui.main;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolist.R;
 import com.example.todolist.data.Priority;
+import com.example.todolist.data.SubTask;
 import com.example.todolist.data.Task;
+import com.example.todolist.viewmodel.TaskViewModel;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +34,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
     private OnItemClickListener listener;
     private OnDeleteClickListener deleteListener;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private final TaskViewModel taskViewModel;
+    private final LifecycleOwner lifecycleOwner;
+
+    public TaskAdapter(TaskViewModel viewModel, LifecycleOwner owner) {
+        this.taskViewModel = viewModel;
+        this.lifecycleOwner = owner;
+    }
 
     @NonNull
     @Override
@@ -37,7 +52,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
-        Task currentTask = tasks.get(position);
+        Task currentTask = getTaskAt(position);
         holder.textViewTitle.setText(currentTask.getTitle());
         if (!currentTask.getDescription().isEmpty()){
             holder.textViewDescription.setText(currentTask.getDescription()); //only show description if not empty
@@ -55,6 +70,47 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
                 break;
         }
         holder.textDueDate.setText(dateFormat.format(currentTask.getDueDate()));
+
+        // Subtasks section
+        SubTaskAdapter subTaskAdapter = new SubTaskAdapter(new SubTaskAdapter.OnSubTaskInteractionListener() {
+            @Override
+            public void onSubTaskChecked(SubTask subTask, boolean isChecked) {
+                subTask.setCompleted(isChecked);
+                taskViewModel.updateSubTask(subTask);
+            }
+
+            @Override
+            public void onSubTaskDeleted(SubTask subTask) {
+                taskViewModel.deleteSubTask(subTask);
+            }
+            @Override
+            public void showEditSubTaskDialog(View view, SubTask subTask) {
+                Context context = view.getContext();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Edit Subtask");
+
+                final EditText input = new EditText(context);
+                input.setText(subTask.getTitle());
+                builder.setView(input);
+
+                builder.setPositiveButton("Save", (dialog, which) -> {
+                    String title = input.getText().toString().trim();
+                    if (!title.isEmpty()) {
+                        subTask.setTitle(title);
+                        taskViewModel.updateSubTask(subTask);
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+                builder.show();
+            }
+        });
+
+        holder.recyclerSubTasks.setAdapter(subTaskAdapter);
+        holder.recyclerSubTasks.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
+
+        taskViewModel.getSubTasksForTask(currentTask.getId())
+                .observe(lifecycleOwner, subTaskAdapter::setSubTasks);
     }
 
     @Override
@@ -78,6 +134,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
         private final ImageButton deleteButton;
         private final TextView textPriority;
         private final TextView textDueDate;
+        private final RecyclerView recyclerSubTasks;
 
 
         public TaskHolder(@NonNull View itemView) {
@@ -87,6 +144,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
             deleteButton = itemView.findViewById(R.id.button_delete);
             textDueDate = itemView.findViewById(R.id.textDueDate);
             textPriority = itemView.findViewById(R.id.textPriority);
+            recyclerSubTasks = itemView.findViewById(R.id.recyclerSubTasks);
 
 
             itemView.setOnClickListener(v -> {

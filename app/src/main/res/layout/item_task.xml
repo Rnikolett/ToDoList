@@ -3,6 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:padding="12dp"
     android:layout_margin="8dp"
@@ -52,14 +53,29 @@
             android:textColor="@android:color/holo_blue_dark"
             android:layout_marginTop="2dp"/>
 
-            <ImageButton
-                android:id="@+id/button_delete"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_delete"
-                card_view:tint="@android:color/holo_red_dark" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSubTasks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="4dp"
+            android:visibility="visible"/>
 
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="end">
+
+        <ImageButton
+            android:id="@+id/button_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_delete"
+            card_view:tint="@android:color/holo_red_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

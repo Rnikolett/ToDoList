@@ -34,13 +34,13 @@ public class TaskListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setHasFixedSize(true);
 
-        TaskAdapter adapter = new TaskAdapter();
-        recyclerView.setAdapter(adapter);
 
         // ViewModel setup
         taskViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())
                 .create(TaskViewModel.class);
-        //taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
+
+        TaskAdapter adapter = new TaskAdapter(taskViewModel, getViewLifecycleOwner());
+        recyclerView.setAdapter(adapter);
         taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), adapter::setTasks);
 
         //Creates a new Task with default values
