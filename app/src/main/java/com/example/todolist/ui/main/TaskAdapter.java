@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolist.R;
 import com.example.todolist.data.Priority;
+import com.example.todolist.data.Status;
 import com.example.todolist.data.SubTask;
 import com.example.todolist.data.Task;
 import com.example.todolist.viewmodel.TaskViewModel;
@@ -69,7 +71,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
                 holder.textPriority.setTextColor(holder.itemView.getResources().getColor(R.color.green));
                 break;
         }
+        holder.completedCheckBox.setOnCheckedChangeListener(null); // avoid triggering on bind
         holder.textDueDate.setText(dateFormat.format(currentTask.getDueDate()));
+        holder.completedCheckBox.setChecked(currentTask.getStatus() == Status.COMPLETED);
+
+        // ✅ Handle checkbox toggle
+        holder.completedCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                currentTask.setStatus(Status.COMPLETED);
+            } else {
+                currentTask.setStatus(Status.PENDING);
+            }
+            taskViewModel.update(currentTask);
+
+            // Update visuals instantly
+            notifyItemChanged(holder.getAbsoluteAdapterPosition());
+        });
 
         // Subtasks section
         SubTaskAdapter subTaskAdapter = new SubTaskAdapter(new SubTaskAdapter.OnSubTaskInteractionListener() {
@@ -135,6 +152,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
         private final TextView textPriority;
         private final TextView textDueDate;
         private final RecyclerView recyclerSubTasks;
+        private CheckBox completedCheckBox;
 
 
         public TaskHolder(@NonNull View itemView) {
@@ -145,6 +163,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
             textDueDate = itemView.findViewById(R.id.textDueDate);
             textPriority = itemView.findViewById(R.id.textPriority);
             recyclerSubTasks = itemView.findViewById(R.id.recyclerSubTasks);
+            completedCheckBox = itemView.findViewById(R.id.checkbox_task_completed);
 
 
             itemView.setOnClickListener(v -> {
